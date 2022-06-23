@@ -29,10 +29,14 @@ cdf2tplot, fn
 ; sattelite height
 get_data, 'Radius', data=radi
 ;
-height = (radi.y - !CONST.R_EARTH) * 1.e-3
-store_data, 'Height', data = {x:radi.x, y:height}
+altitude = (radi.y - !CONST.R_EARTH) * 1.e-3
+store_data, 'Altitude', data = {x:radi.x, y:altitude}
+options, 'Altitude', 'ysubtitle', '[km]'
+options, 'Altitude', 'ytitle', 'Alt[km]'
 ;
-tplot_options, 'var_label', ['MLT', 'QDLatitude', 'Height']
+options,  'QDLatitude','ytitle',  'MLAT'
+;
+tplot_options, 'var_label', ['MLT', 'QDLatitude', 'Altitude']
 
 
 END
