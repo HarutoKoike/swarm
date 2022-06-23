@@ -22,6 +22,9 @@ PRO tsavgol, tname, nleft, nright, order, degree, double=double, newname=newname
 ;  H.Koike 2022/06/23
 ;===========================================================+
 ;
+IF ISA(tname, 'INT') THEN tname = (tnames())[tname-1]
+print, tname
+;
 get_data, tname, data=d, dlim=dlim
 
 ;

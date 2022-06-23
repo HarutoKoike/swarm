@@ -3,8 +3,9 @@
 PRO save_png, filename, window=window 
 SET_PLOT, 'X'
 DEVICE, DECOMPOSED=0, RETAIN=2
-WSET, window
-WRITE_PNG, filename, TVRD(/TRUE)
+IF ~KEYWORD_SET(window) THEN window = !D.WINDOW
+;WSET, window
+WRITE_PNG, filename, TVRD(TRUE=1)
 END
 
 

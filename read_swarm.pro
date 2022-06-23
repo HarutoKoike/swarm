@@ -1,8 +1,10 @@
 
-;fn = '/home/step/goto/SW_EXPT_EFIA_TCT16_20150117T000000_20150117T235959_0302.cdf'
-fn = '~/idl/swarm/SW_EXPT_EFIA_TCT16_20150117T000000_20150117T235959_0302.cdf'
 
+PRO read_swarm, fn
 
+;
+;*---------- change attributes for all zVariables  ----------*
+;
 id  = CDF_OPEN(fn)
 inq = CDF_INQUIRE(id)
 ;
@@ -13,16 +15,24 @@ FOR i = 0, inq.nzvars - 1 DO BEGIN
 ENDFOR
 ;
 CDF_CLOSE, id
- 
 
-cdf2tplot, fn
+
 ;
-timespan, ['2015-01-17/12:58:00', '2015-01-17/13:00:00']
+;*---------- read cdf file  ----------*
+;
+cdf2tplot, fn
 
-;tnames = ['Ehx', 'Ehy', 'Ehz', 'Evx', 'Evy', 'Evz']
-;tplot, tnames
 
-tname = 'By'
-tsavgol, tname, 10, 10, 0, 4, /subtract
+;
+;*---------- set ephemeris  ----------*
+;
+; sattelite height
+get_data, 'Radius', data=radi
+;
+height = (radi.y - !CONST.R_EARTH) * 1.e-3
+store_data, 'Height', data = {x:radi.x, y:height}
+;
+tplot_options, 'var_label', ['MLT', 'QDLatitude', 'Height']
 
-end
+
+END
