@@ -12,28 +12,36 @@ nright = 800  ;　フィッティングに使うデータ点で、現在時刻�
 order  = 0   ;  何階微分の係数を取得するか。単純なフィッティングであれば0で良い。
 degree = 2   ;  多項式でフィッティングする時に、何次の項まで使うか。とりあえず4次くらい？
 
-tsavgol, 'By', nleft, nright, order, degree, /subtract ; "By" というtplot変数をSavgolフィルターにかける   
+tsavgol, 'Bx', nleft, nright, order, degree, /subtract ; "By" というtplot変数をSavgolフィルターにかける   
 
 window, 1, retain=2  ;おまじない
 
 tplot_options, 'title', 'SWARM-A'   ; プロットのタイトルをつける
 tplot_options, 'thick', 1.5         ; プロットの線の太さを決める。デフォルトは1
-options, 'By_Savitzky-Golay', 'ytitle', 'By_savgol' ;y軸のタイトルを変更する。ここでは２段目のパネルのタイトルを変更
-options, 'By_Savitzky-Golay', 'ycharsize', 1.2 ;y軸の文字サイズを変更する。
-options, 'By_subtracted_Savitzky-Golay', 'ytitle', 'By - By_savgol' 
-options, 'By_subtracted_Savitzky-Golay', 'ycharsize', 1.2 
-options, 'By', 'ycharsize', 1.2
+options, 'Bx_Savitzky-Golay', 'ytitle', 'By_savgol' ;y軸のタイトルを変更する。ここでは２段目のパネルのタイトルを変更
+options, 'Bx_Savitzky-Golay', 'ycharsize', 1.2 ;y軸の文字サイズを変更する。
+options, 'Bx_subtracted_Savitzky-Golay', 'ytitle', 'By - By_savgol' 
+options, 'Bx_subtracted_Savitzky-Golay', 'ycharsize', 1.2 
+options, 'Bx', 'ycharsize', 1.2
 
 
 get_timespan, ts
 ts = time_string(ts)
-time_clip, 'By_subtracted_Savitzky-Golay', ts[0], ts[1]
-tdpwrspc, 'By_subtracted_Savitzky-Golay_tclip', ndatap=256
+time_clip, 'Bx_subtracted_Savitzky-Golay', ts[0], ts[1]
+tdpwrspc, 'Bx_subtracted_Savitzky-Golay_tclip', ndatap=256
 
 
 
-tplot, ['By', 'By_Savitzky-Golay', 'By_subtracted_Savitzky-Golay', $
-        'By_subtracted_Savitzky-Golay_tclip_dpwrspc']
+ylim, 'Ehx', -50, 50 
+ylim, 'Ehy', -50, 50 
+ylim, 'Ehz', -50, 50 
+ylim, 'Bz', 4.3e4, 4.6e4 
 
-save_png, '~/idl/swarm/swarm_By.png', window=1
+tplot, ['Ehx', 'Ehy', 'Ehz', 'Bx', 'By', 'Bz', 'Bx_subtracted_Savitzky-Golay']
+timebar, '2015-01-17/12:58:56.5'
+
+;tplot, ['Bx', 'Bx_Savitzky-Golay', 'Bx_subtracted_Savitzky-Golay', $
+;        'Bx_subtracted_Savitzky-Golay_tclip_dpwrspc']
+
+save_png, '~/idl/swarm/swarm_Bx.png', window=1
 end
